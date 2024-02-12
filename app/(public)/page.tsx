@@ -54,7 +54,7 @@ export default function LoginAccount() {
       setisloading(true)
     } catch (error) {
       console.log(error)
-      toast.error("error while sign in")
+     toast.error(error?.response.data.message);
       setisloading(false)
     }
     
@@ -67,7 +67,7 @@ export default function LoginAccount() {
       <div className="w-full m-auto bg-white lg:max-w-lg">
         <Toaster position='top-right'
           toastOptions={{
-            duration:10000
+            duration:5000
           }}
           ></Toaster>
         <Card>

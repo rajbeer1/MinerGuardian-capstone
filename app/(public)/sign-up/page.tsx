@@ -22,7 +22,8 @@ export default function LoginAccount() {
   const [data, setdata] = useState({
     email: "",
     name:"",
-    password:""
+    password: "",
+    admin:""
   })
   const [remember,setremember]= useState(0)
   const [isloading, setisloading] = useState(false)
@@ -44,6 +45,7 @@ export default function LoginAccount() {
     try {
       setisloading(true)
       const user = await axiosClient.post('/auth/signup', data)
+      console.log(user)
       toast.success("successfully signed in")
       if (remember === 0) {
         setCookie('user', user.data.token, 0.1)
@@ -54,8 +56,9 @@ export default function LoginAccount() {
       router.push('/home')
       setisloading(true)
     } catch (error) {
-      console.log(error)
-      toast.error("error while sign in")
+      console.log(error?.response.data.message)
+      toast.error(error?.response.data.message);
+
       setisloading(false)
     }
     
@@ -66,11 +69,12 @@ export default function LoginAccount() {
   return (
     <div className="relative flex flex-col justify-center items-center min-h-screen overflow-hidden">
       <div className="w-full m-auto bg-white lg:max-w-lg">
-        <Toaster position='top-right'
+        <Toaster
+          position="top-right"
           toastOptions={{
-            duration:10000
+            duration: 5000,
           }}
-          ></Toaster>
+        ></Toaster>
         <Card>
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl text-center">Sign up</CardTitle>
@@ -84,33 +88,58 @@ export default function LoginAccount() {
           <CardContent className="grid gap-4">
             <div className="grid gap-2">
               <Label htmlFor="name">Name</Label>
-              <Input id="name" type="name" placeholder="" onChange={(e) => {
-                setdata({...data,name:e.target.value})
-              }}/>
+              <Input
+                id="name"
+                type="name"
+                placeholder=""
+                onChange={(e) => {
+                  setdata({ ...data, name: e.target.value });
+                }}
+              />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="" onChange={(e) => {
-                setdata({...data,email:e.target.value})
-              }}/>
+              <Input
+                id="email"
+                type="email"
+                placeholder=""
+                onChange={(e) => {
+                  setdata({ ...data, email: e.target.value });
+                }}
+              />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" onChange={(e) => {
-                setdata({...data,password:e.target.value})
-              }}/>
+              <Input
+                id="password"
+                type="password"
+                onChange={(e) => {
+                  setdata({ ...data, password: e.target.value });
+                }}
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="password">Admin email</Label>
+              <Input
+                id="email"
+                type="email"
+                onChange={(e) => {
+                  setdata({ ...data, admin: e.target.value });
+                }}
+              />
             </div>
             <div className="flex items-center space-x-2">
-              <Checkbox id="terms" onCheckedChange={(checked) => {
-                 
-                
-                if (checked === false) {
-                  setremember(0)
-                } else if(checked===true){
-                  setremember(1)
-                }
-                console.log(remember)
-              }}  />
+              <Checkbox
+                id="terms"
+                onCheckedChange={(checked) => {
+                  if (checked === false) {
+                    setremember(0);
+                  } else if (checked === true) {
+                    setremember(1);
+                  }
+                  console.log(remember);
+                }}
+              />
               <label
                 htmlFor="terms"
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -120,15 +149,19 @@ export default function LoginAccount() {
             </div>
           </CardContent>
           <CardFooter className="flex flex-col">
-            <Button disabled={ isloading} className="w-full" onClick={submit}>Login</Button>
+            <Button disabled={isloading} className="w-full" onClick={submit}>
+              Signup
+            </Button>
             <p className="mt-2 text-xs text-center text-gray-700">
-              {" "}
-              Don't have an account?{" "}
-              <span className=" text-blue-600 hover:underline"><Link href="/sign-up">Sign up</Link></span>
+              {' '}
+               have an account?{' '}
+              <span className=" text-blue-600 hover:underline">
+                <Link href="/">Log in</Link>
+              </span>
             </p>
           </CardFooter>
         </Card>
       </div>
     </div>
-  )
+  );
 }
