@@ -52,9 +52,9 @@ export default function LoginAccount() {
       
       router.push('/home')
       setisloading(true)
-    } catch (error) {
-      console.log(error)
-     toast.error(error?.response.data.message);
+    } catch (error: any) {
+   
+     toast.error(error?.response.data.message );
       setisloading(false)
     }
     

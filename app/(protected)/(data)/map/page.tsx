@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import toast,{Toaster} from 'react-hot-toast';
 import LoadingRings from '@/components/loader';
+import { jwtDecode } from '@/helpers/jwt';
 
 function Home() {
   const libraries: Libraries = ['visualization'] as const;
@@ -22,10 +23,13 @@ function Home() {
   const [cordData, setcordData] = useState([
     { latitude: 0, longitude: 0, email: '' },
   ]);
+  const [useremail,setuseremail]= useState('')
   const getdata = async () => { 
     try {
       setisloading(true);
       const token = Cookies.get('user');
+      const payload = jwtDecode()
+      setuseremail(payload?.email!)
       const data = await axiosClient.get('/data/cords/email', {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -88,12 +92,6 @@ function Home() {
       }}
     >
       {' '}
-      <Toaster
-        position="top-right"
-        toastOptions={{
-          duration: 10000,
-        }}
-      ></Toaster>
       <GoogleMap
         mapContainerStyle={{
           position: 'relative',
@@ -109,6 +107,13 @@ function Home() {
             key={index}
             position={{ lat: data.latitude, lng: data.longitude }}
             onClick={() => handleActiveMarker(index)}
+            icon={{
+              url:
+                data.email === useremail
+                  ? 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+                  : 'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+              
+            }}
           >
             {activeMarker === index ? (
               <InfoWindow onCloseClick={() => setActiveMarker(null)}>

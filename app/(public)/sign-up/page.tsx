@@ -55,7 +55,7 @@ export default function LoginAccount() {
       
       router.push('/home')
       setisloading(true)
-    } catch (error) {
+    } catch (error : any) {
       console.log(error?.response.data.message)
       toast.error(error?.response.data.message);
 
