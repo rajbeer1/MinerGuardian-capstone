@@ -56,12 +56,8 @@ export default function LoginAccount() {
    
      toast.error(error?.response.data.message );
       setisloading(false)
-    }
-    
-    
+    }  
  }
-  console.log(data)
-  
   return (
     <div className="relative flex flex-col justify-center items-center min-h-screen overflow-hidden">
       <div className="w-full m-auto bg-white lg:max-w-lg">

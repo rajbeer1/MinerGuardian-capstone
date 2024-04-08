@@ -1,4 +1,3 @@
-// socketClient.ts
 import { io, Socket } from 'socket.io-client';
 import Cookies from 'js-cookie';
 class SocketClient {
