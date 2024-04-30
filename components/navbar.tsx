@@ -59,11 +59,12 @@ const Navbar = () => {
         }}
       ></Toaster>
       <nav
+        className="bg-gradient-to-r from-purple-200 to-indigo-200 "
         style={{
           display: 'flex',
           justifyContent: 'space-around',
 
-          background: '#D1D5DB',
+          
           position: 'fixed',
           height: '60px',
           top: 0,
@@ -80,7 +81,7 @@ const Navbar = () => {
             Home
           </div>
         </Link>
-       
+
         <Link href="/map">
           <div
             className="text-xl font-medium hover:text-violet-600"

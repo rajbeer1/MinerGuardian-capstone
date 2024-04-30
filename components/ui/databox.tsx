@@ -5,33 +5,34 @@ import { Button } from "./button";
 export const DataBox = ({ data }:any) => {
   const router = useRouter()
   return (
-    <div className="bg-gray-300 p-4 rounded shadow-md text-black flex flex-col justify-between h-full ">
+    <div className="bg-gradient-to-r from-purple-200 to-indigo-200  p-4 rounded shadow-md text-black flex flex-col justify-between h-full ">
       <div>
         <div className="mb-2 mt-2 text-lg">
           Latitude:{' '}
-          <span className="text-2xl text-purple-700">{data.latitude}</span>
+          <span className="text-2xl text-stone-600">{data.latitude}</span>
         </div>
         <div className="mb-2 mt-2 text-lg ">
           Longitude:{' '}
-          <span className="text-2xl text-purple-700">{data.longitude}</span>
+          <span className="text-2xl text-stone-600">{data.longitude}</span>
         </div>
         <div className="mb-2 mt-2 text-lg ">
           Altitude:{' '}
-          <span className="text-2xl text-purple-700">{data.altitude} </span>
+          <span className="text-2xl text-stone-600">{data.altitude} </span>
           meters
         </div>
         <div className="mb-2 mt-2 text-lg ">
           Temperature:{' '}
-          <span className="text-2xl text-purple-700">{data.temperature} </span>
+          <span className="text-2xl text-stone-600">{data.temperature} </span>
           °C
         </div>
         <div className="mb-2 mt-2 text-lg ">
           Distance:{' '}
-          <span className="text-2xl text-purple-700">{data.distance} </span> metres
+          <span className="text-2xl text-stone-600">{data.distance} </span>{' '}
+          metres
         </div>
         <div className="mb-2 mt-2 text-lg ">
           Working:{' '}
-          <span className="text-2xl text-purple-700">
+          <span className="text-2xl text-stone-600">
             {data.vibration ? (
               <div className="w-16 h-8 bg-green-500 text-white flex items-center justify-center text-lg font-bold rounded">
                 Yes

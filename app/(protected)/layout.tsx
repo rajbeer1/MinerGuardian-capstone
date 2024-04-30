@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import Cookies from "js-cookie";
 import toast,{Toaster} from "react-hot-toast";
 import axiosClient from "@/helpers/axios";
+import { headers } from "next/headers";
 export default function Layout({
   children,
 }: {
@@ -25,9 +26,9 @@ useEffect(() => {
       <div
         className={`${
           t.visible ? 'animate-enter' : 'animate-leave'
-        } max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+        } max-w-md w-full bg-gradient-to-r from-purple-200 to-indigo-200 shadow-lg rounded-lg pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
       >
-        <div className="flex-1 w-0 p-4">
+        <div className="flex-1  w-0 p-4 ">
           <div className="flex items-start">
             <div className="ml-1 flex-1">
               <p className="text-sm font-medium text-gray-900">
@@ -40,6 +41,7 @@ useEffect(() => {
         <div className="flex border-l border-gray-200">
           <button
             onClick={async () => {
+
               const data = await axiosClient.post(
                 `/sos`,
                 { type: 'temperature' },
@@ -60,12 +62,18 @@ useEffect(() => {
             Send Help
           </button>
           <button
-            onClick={() => {
+            onClick={async () => {
+
+              const change = await axiosClient.post('/sos/fine',{}, {
+                headers: {
+                  Authorization: `Bearer ${Cookies.get('user')}`,
+                },
+              });
               toast.dismiss(t.id);
             }}
             className="w-full border border-transparent rounded-none rounded-l-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
-            I am OK
+            It's fine
           </button>
         </div>
       </div>
@@ -114,12 +122,16 @@ useEffect(() => {
             Send Help
           </button>
           <button
-            onClick={() => {
+            onClick={async () => {
+
+              const change = await axiosClient.post('/sos/fine', {},{
+                headers: { Authorization: `Bearer ${Cookies.get('user')}` },
+              });
               toast.dismiss(t.id);
             }}
             className="w-full border border-transparent rounded-none rounded-l-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
-            I am OK
+            It's fine
           </button>
         </div>
       </div>
@@ -168,12 +180,16 @@ useEffect(() => {
             Send Help
           </button>
           <button
-            onClick={() => {
+            onClick={async () => {
+
+              const change = await axiosClient.post('/sos/fine',{}, {
+                headers: { Authorization: `Bearer ${Cookies.get('user')}` },
+              });
               toast.dismiss(t.id);
             }}
             className="w-full border border-transparent rounded-none rounded-l-lg p-4 flex items-center justify-center text-sm font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           >
-            I am OK
+            It's fine
           </button>
         </div>
       </div>

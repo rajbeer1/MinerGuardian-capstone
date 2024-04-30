@@ -21,30 +21,27 @@ for (let i = 0; i < data.length; i++) {
       width={600}
       height={360}
       data={data}
-      margin={{
-        top: 20, right: 30, left: 20, bottom: 20,
-      }}
-    > 
+      margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+    >
       <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="name" tick={false} >
-        
-      </XAxis>
+      <XAxis dataKey="name" tick={<Text fontSize="12" fill="black" />} />
       <YAxis />
       <Tooltip />
       <Legend />
-      <Bar dataKey={name} fill="#8884d8" />
-      <ReferenceLine y={average} stroke="red" strokeDasharray="5 5" strokeWidth={3} >
-        <Label position={'top'} style={{
-    fontSize: '1.05em',
-          fill: 'black', 
-          marginTop: '26px'
-           
-        }}
-          
+      <Bar dataKey={name} fill="#475569" />
+      <ReferenceLine
+        y={average}
+        stroke="red"
+        strokeDasharray="5 5"
+        strokeWidth={3}
+      >
+        <Label
+          position={'top'}
+          style={{ fontSize: '1.05em', fill: '#475569', marginTop: '26px' }}
         >{`AVG:${average.toFixed(2)}`}</Label>
       </ReferenceLine>
- 
-    </BarChart>)
+    </BarChart>
+  );
 };
 
 export default MyBarChart;
