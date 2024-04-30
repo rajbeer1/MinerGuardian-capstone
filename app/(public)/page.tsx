@@ -53,10 +53,12 @@ export default function LoginAccount() {
       router.push('/home')
       setisloading(true)
     } catch (error: any) {
-   
-     toast.error(error?.response.data.message );
+      const erro = error.response.data.message || error?.message || 'error';
+      toast.error(erro);
       setisloading(false)
-    }  
+    } finally {
+      setisloading(false);
+    }
  }
   return (
     <div className="relative flex flex-col justify-center items-center min-h-screen overflow-hidden">
@@ -110,11 +112,7 @@ export default function LoginAccount() {
           </CardContent>
           <CardFooter className="flex flex-col">
             <Button disabled={ isloading} className="w-full" onClick={submit}>Login</Button>
-            <p className="mt-2 text-xs text-center text-gray-700">
-              {" "}
-              Don't have an account?{" "}
-              <span className=" text-blue-600 hover:underline"><Link href="/sign-up">Sign up</Link></span>
-            </p>
+            
           </CardFooter>
         </Card>
       </div>

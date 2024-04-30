@@ -35,6 +35,7 @@ export const config = {
   matcher: [
     '/sign-up', // Public path
     '/', // Public path
+    
     '/data', // Protected path
     '/home',
     '/map',

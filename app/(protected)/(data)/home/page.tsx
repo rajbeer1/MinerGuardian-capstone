@@ -5,57 +5,72 @@ import MyBarChart from '@/components/graphs/recharts';
 import { DataBox } from '@/components/ui/databox'
 import Cookies from 'js-cookie';
 import axiosClient from '@/helpers/axios';
-const Home = () => {
-  const [dataBox,setdataBox]= useState({})
-  const [isloading, setislodaing] = useState(false);
-  
-  const temp = async () => {
-    const response = await fetchsensordata('temperature', 15);
-    settemperature(response.data);
-  };
-  const alti = async () => {
-    const response = await fetchsensordata('altitude', 15);
-    setaltitude(response.data);
-  };
-  const gass = async () => {
-    const response = await fetchsensordata('gas', 15);
-    setgas(response.data);
-  };
-  const press = async () => {
-    const response = await fetchsensordata('pressure', 15);
-    setpressure(response.data);
-  };
-  const databox = async () => {
-    const response = await axiosClient.get('/data/box', {
-      headers: {
-        Authorization: `Bearer ${Cookies.get('user')}`
-      }
-    })
-    setdataBox(response.data)
-  }
-  const alldata = () => {
-    setislodaing(true)
-    
-    databox();
-    temp();
-    alti();
-    gass();
-    press();
+import Loader from '@/components/loader';
 
-    setislodaing(false)
+const Home = () => {
+  const [dataBox, setdataBox] = useState({});
+  const [isloading, setislodaing] = useState(false);
+  const [temperature, settemperature] = useState([]);
+  const [altitude, setaltitude] = useState([]);
+  const [gas, setgas] = useState([]);
+  const [pressure, setpressure] = useState([]);
+
+  const fetchData = async () => {
+    setislodaing(true);
+
+    try {
+      const [tempResponse, altiResponse, gasResponse, pressResponse, dataBoxResponse] = await Promise.all([
+        fetchsensordata('temperature', 15),
+        fetchsensordata('altitude', 15),
+        fetchsensordata('gas', 15),
+        fetchsensordata('pressure', 15),
+        axiosClient.get('/data/box', {
+          headers: {
+            Authorization: `Bearer ${Cookies.get('user')}`
+          }
+        })
+      ]);
+
+      settemperature(tempResponse.data);
+      setaltitude(altiResponse.data);
+      setgas(gasResponse.data);
+      setpressure(pressResponse.data);
+      setdataBox(dataBoxResponse.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setislodaing(false);
+    }
   };
+
   useEffect(() => {
-    alldata();
-    console.log(dataBox)
+    fetchData();
   }, []);
 
+  if (isloading) return (
+   <Loader/>
+  );
+  if (temperature.length < 5 || pressure.length <5 || gas.length <5 || altitude.length <5) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="bg-white p-8 rounded-lg shadow-md">
+          <h2 className="text-2xl font-bold mb-4">Insufficient Proper Data</h2>
+          <p className="text-gray-600 mb-6">
+            The data for your specific device is insufficient. Please ensure
+            that your hardware device is turned on and try again later.
+          </p>
+          <button className="bg-purple-500 text-white py-2 px-4 rounded-md hover:bg-purple-600 transition-colors duration-300"
+            onClick={() => {
+        window.location.reload()
+          }}
+          >
+            Refresh Data
+          </button>
+        </div>
+      </div>
+    );
+  }
 
-  const [temperature, settemperature] = useState({});
-  const [altitude, setaltitude] = useState({});
-  const [gas, setgas] = useState({});
-  const [pressure, setpressure] = useState({});
-
-  if(isloading) return<>loading</>
   return (
     <>
       <div
@@ -64,9 +79,7 @@ const Home = () => {
       >
         {/* DataBox on the left */}
         <div className="w-1/5 p-4 flex flex-col">
-          <DataBox
-            data ={dataBox}
-          />
+          <DataBox data={dataBox} />
         </div>
 
         {/* Charts on the right */}
@@ -90,5 +103,7 @@ const Home = () => {
     </>
   );
 };
+
+
 
 export default Home;

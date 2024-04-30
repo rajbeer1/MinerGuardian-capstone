@@ -1,6 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import Cookies from "js-cookie"
 import {
   Card,
   CardContent,
@@ -13,18 +14,46 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import axiosClient from "@/helpers/axios"
+import { signup_token } from "@/helpers/jwt"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { useState } from "react"
+import {  useRouter, useSearchParams } from "next/navigation"
+import { useEffect, useState } from "react"
 import toast, { Toaster } from "react-hot-toast"
 export default function LoginAccount() {
-  const router = useRouter()
   const [data, setdata] = useState({
-    email: "",
-    name:"",
-    password: "",
-    admin:""
-  })
+    email: '',
+    name: '',
+    password: '',
+    admin: '',
+  });
+  const router = useRouter()
+  const token = useSearchParams().get('token');
+
+  console.log(token)
+  if (!token) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="bg-white p-8 rounded-lg shadow-md">
+          <h2 className="text-2xl font-bold mb-4">Invalid Sign-up</h2>
+          <p className="text-gray-600 mb-6">
+            You must be invited by an Admin to join this Platform 
+          </p>
+          <button
+            className="bg-purple-500 text-white py-2 px-4 rounded-md hover:bg-purple-600 transition-colors duration-300"
+            onClick={() => {
+              router.push('/')
+            }}
+          >
+           Go to Login 
+          </button>
+        </div>
+      </div>
+    );
+  }
+  const decoded = signup_token(token) as any
+  console.log(decoded)
+ 
+  
   const [remember,setremember]= useState(0)
   const [isloading, setisloading] = useState(false)
   function setCookie(name:string, value: string, days: number) {
@@ -41,25 +70,33 @@ export default function LoginAccount() {
       expires +
       '; path=/; Secure; SameSite=None;';
   }
+  useEffect(() => {
+    setdata({ ...data, admin: decoded!.admin });
+  },[])
   const submit = async () => {
     try {
       setisloading(true)
+       
       const user = await axiosClient.post('/auth/signup', data)
       console.log(user)
       toast.success("successfully signed in")
       if (remember === 0) {
         setCookie('user', user.data.token, 0.1)
+
       } else {
         setCookie('user', user.data.token, 2)
       }
       
       router.push('/home')
       setisloading(true)
-    } catch (error : any) {
-      console.log(error?.response.data.message)
-      toast.error(error?.response.data.message);
+    } catch (error: any) {
+
+       const erro = error.response.data.message|| error?.message || 'error';
+       toast.error(erro);
 
       setisloading(false)
+    } finally {
+      setisloading(false);
     }
     
     
@@ -118,16 +155,7 @@ export default function LoginAccount() {
                 }}
               />
             </div>
-            <div className="grid gap-2">
-              <Label htmlFor="password">Admin email</Label>
-              <Input
-                id="email"
-                type="email"
-                onChange={(e) => {
-                  setdata({ ...data, admin: e.target.value });
-                }}
-              />
-            </div>
+            
             <div className="flex items-center space-x-2">
               <Checkbox
                 id="terms"
@@ -152,13 +180,7 @@ export default function LoginAccount() {
             <Button disabled={isloading} className="w-full" onClick={submit}>
               Signup
             </Button>
-            <p className="mt-2 text-xs text-center text-gray-700">
-              {' '}
-               have an account?{' '}
-              <span className=" text-blue-600 hover:underline">
-                <Link href="/">Log in</Link>
-              </span>
-            </p>
+           
           </CardFooter>
         </Card>
       </div>

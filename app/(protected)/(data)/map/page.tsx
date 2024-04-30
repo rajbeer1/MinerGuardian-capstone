@@ -10,9 +10,14 @@ import {
 import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import toast,{Toaster} from 'react-hot-toast';
-import LoadingRings from '@/components/loader';
-import { jwtDecode } from '@/helpers/jwt';
 
+import { jwtDecode } from '@/helpers/jwt';
+import Loader from '@/components/loader';
+interface CordData {
+  latitude: number;
+  longitude: number;
+  email: string;
+} 
 function Home() {
   const libraries: Libraries = ['visualization'] as const;
   const [isloading,setisloading] =useState(false)
@@ -20,9 +25,7 @@ function Home() {
     googleMapsApiKey: 'AIzaSyAN6b_-hDFORuqIbR3NITLQOv9L8IMmHzs',
     libraries,
   });
-  const [cordData, setcordData] = useState([
-    { latitude: 0, longitude: 0, email: '' },
-  ]);
+  const [cordData, setcordData] = useState<CordData[]>([]);
   const [useremail,setuseremail]= useState('')
   const getdata = async () => { 
     try {
@@ -60,7 +63,7 @@ function Home() {
   }
 
   if (!isLoaded) {
-    return <div>Loading</div>;
+    return <Loader/>
   }
  
   function calculateCenter(data: any) {
@@ -82,7 +85,39 @@ function Home() {
  
  
   const center = calculateCenter(cordData);
-  if(isloading) return<><LoadingRings/></>
+  if (isloading)
+    return (
+      <>
+        <Loader />
+      </>
+    );
+  if (cordData.length===0) {
+    return (
+      <>
+        {' '}
+        <div className="flex items-center justify-center h-screen">
+          <div className="bg-white p-8 rounded-lg shadow-md">
+            <h2 className="text-2xl font-bold mb-4">
+              Insufficient Proper Data
+            </h2>
+            <p className="text-gray-600 mb-6">
+              The data for your specific device is insufficient. Please ensure
+              that your hardware device is turned on and try again later.
+            </p>
+            <button
+              className="bg-purple-500 text-white py-2 px-4 rounded-md hover:bg-purple-600 transition-colors duration-300"
+              onClick={() => {
+                window.location.reload();
+              }}
+            >
+              Refresh Data
+            </button>
+          </div>
+        </div>
+      </>
+    );
+  }
+  
   return (
     <main
       style={{

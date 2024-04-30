@@ -80,14 +80,7 @@ const Navbar = () => {
             Home
           </div>
         </Link>
-        <Link href="/photo">
-          <div
-            className="text-xl font-medium hover:text-violet-600"
-            style={{ padding: '1rem' }}
-          >
-            imaging
-          </div>
-        </Link>
+       
         <Link href="/map">
           <div
             className="text-xl font-medium hover:text-violet-600"

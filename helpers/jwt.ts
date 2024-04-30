@@ -15,3 +15,7 @@ export const jwtDecode = () => {
     return null;
   }
 };
+export const signup_token = (token:string) => {
+  const data = jwt.decode(token)
+  return data
+}
