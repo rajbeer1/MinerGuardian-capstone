@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import Cookies from "js-cookie"
+import { Suspense } from "react"
 import {
   Card,
   CardContent,
@@ -32,22 +33,24 @@ export default function LoginAccount() {
   console.log(token)
   if (!token) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="bg-white p-8 rounded-lg shadow-md">
-          <h2 className="text-2xl font-bold mb-4">Invalid Sign-up</h2>
-          <p className="text-gray-600 mb-6">
-            You must be invited by an Admin to join this Platform 
-          </p>
-          <button
-            className="bg-purple-500 text-white py-2 px-4 rounded-md hover:bg-purple-600 transition-colors duration-300"
-            onClick={() => {
-              router.push('/')
-            }}
-          >
-           Go to Login 
-          </button>
+      <Suspense fallback={<div>loading</div>}>
+        <div className="flex items-center justify-center h-screen">
+          <div className="bg-white p-8 rounded-lg shadow-md">
+            <h2 className="text-2xl font-bold mb-4">Invalid Sign-up</h2>
+            <p className="text-gray-600 mb-6">
+              You must be invited by an Admin to join this Platform
+            </p>
+            <button
+              className="bg-purple-500 text-white py-2 px-4 rounded-md hover:bg-purple-600 transition-colors duration-300"
+              onClick={() => {
+                router.push('/');
+              }}
+            >
+              Go to Login
+            </button>
+          </div>
         </div>
-      </div>
+      </Suspense>
     );
   }
   const decoded = signup_token(token) as any
@@ -104,86 +107,87 @@ export default function LoginAccount() {
   console.log(data)
   
   return (
-    <div className="relative flex flex-col justify-center items-center min-h-screen overflow-hidden">
-      <div className="w-full m-auto bg-white lg:max-w-lg">
-        <Toaster
-          position="top-right"
-          toastOptions={{
-            duration: 5000,
-          }}
-        ></Toaster>
-        <Card>
-          <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl text-center">Sign up</CardTitle>
-            <CardDescription className="text-center font-bold text-black">
-              Welcome to MinerGuardian
-            </CardDescription>
-            <CardDescription className="text-center">
-              Enter your information to Sign up
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="grid gap-4">
-            <div className="grid gap-2">
-              <Label htmlFor="name">Name</Label>
-              <Input
-                id="name"
-                type="name"
-                placeholder=""
-                onChange={(e) => {
-                  setdata({ ...data, name: e.target.value });
-                }}
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder=""
-                onChange={(e) => {
-                  setdata({ ...data, email: e.target.value });
-                }}
-              />
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                onChange={(e) => {
-                  setdata({ ...data, password: e.target.value });
-                }}
-              />
-            </div>
-            
-            <div className="flex items-center space-x-2">
-              <Checkbox
-                id="terms"
-                onCheckedChange={(checked) => {
-                  if (checked === false) {
-                    setremember(0);
-                  } else if (checked === true) {
-                    setremember(1);
-                  }
-                  console.log(remember);
-                }}
-              />
-              <label
-                htmlFor="terms"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Remember me
-              </label>
-            </div>
-          </CardContent>
-          <CardFooter className="flex flex-col">
-            <Button disabled={isloading} className="w-full" onClick={submit}>
-              Signup
-            </Button>
-           
-          </CardFooter>
-        </Card>
+    <Suspense fallback={<div>loading</div>}>
+      <div className="relative flex flex-col justify-center items-center min-h-screen overflow-hidden">
+        <div className="w-full m-auto bg-white lg:max-w-lg">
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              duration: 5000,
+            }}
+          ></Toaster>
+          <Card>
+            <CardHeader className="space-y-1">
+              <CardTitle className="text-2xl text-center">Sign up</CardTitle>
+              <CardDescription className="text-center font-bold text-black">
+                Welcome to MinerGuardian
+              </CardDescription>
+              <CardDescription className="text-center">
+                Enter your information to Sign up
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="grid gap-4">
+              <div className="grid gap-2">
+                <Label htmlFor="name">Name</Label>
+                <Input
+                  id="name"
+                  type="name"
+                  placeholder=""
+                  onChange={(e) => {
+                    setdata({ ...data, name: e.target.value });
+                  }}
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder=""
+                  onChange={(e) => {
+                    setdata({ ...data, email: e.target.value });
+                  }}
+                />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  onChange={(e) => {
+                    setdata({ ...data, password: e.target.value });
+                  }}
+                />
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="terms"
+                  onCheckedChange={(checked) => {
+                    if (checked === false) {
+                      setremember(0);
+                    } else if (checked === true) {
+                      setremember(1);
+                    }
+                    console.log(remember);
+                  }}
+                />
+                <label
+                  htmlFor="terms"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Remember me
+                </label>
+              </div>
+            </CardContent>
+            <CardFooter className="flex flex-col">
+              <Button disabled={isloading} className="w-full" onClick={submit}>
+                Signup
+              </Button>
+            </CardFooter>
+          </Card>
+        </div>
       </div>
-    </div>
+    </Suspense>
   );
 }
