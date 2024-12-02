@@ -108,15 +108,15 @@ export default function LoginAccount() {
   
   return (
     <Suspense fallback={<div>loading</div>}>
-      <div className="relative flex flex-col justify-center items-center min-h-screen overflow-hidden">
-        <div className="w-full m-auto bg-white lg:max-w-lg">
+      <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4 sm:px-6 lg:px-8">
+        <div className="w-full max-w-md">
           <Toaster
             position="top-right"
             toastOptions={{
               duration: 5000,
             }}
-          ></Toaster>
-          <Card>
+          />
+          <Card className="w-full">
             <CardHeader className="space-y-1">
               <CardTitle className="text-2xl text-center">Sign up</CardTitle>
               <CardDescription className="text-center font-bold text-black">
@@ -131,7 +131,7 @@ export default function LoginAccount() {
                 <Label htmlFor="name">Name</Label>
                 <Input
                   id="name"
-                  type="name"
+                  type="text"
                   placeholder=""
                   onChange={(e) => {
                     setdata({ ...data, name: e.target.value });
@@ -159,17 +159,11 @@ export default function LoginAccount() {
                   }}
                 />
               </div>
-
               <div className="flex items-center space-x-2">
                 <Checkbox
                   id="terms"
                   onCheckedChange={(checked) => {
-                    if (checked === false) {
-                      setremember(0);
-                    } else if (checked === true) {
-                      setremember(1);
-                    }
-                    console.log(remember);
+                    setremember(checked ? 1 : 0);
                   }}
                 />
                 <label
@@ -180,7 +174,7 @@ export default function LoginAccount() {
                 </label>
               </div>
             </CardContent>
-            <CardFooter className="flex flex-col">
+            <CardFooter>
               <Button disabled={isloading} className="w-full" onClick={submit}>
                 Signup
               </Button>

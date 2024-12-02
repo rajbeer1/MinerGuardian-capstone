@@ -7,7 +7,7 @@ import Cookies from 'js-cookie';
 import axiosClient from '@/helpers/axios';
 import Loader from '@/components/loader';
 
- const Home = () => {
+const Home = () => {
   const [dataBox, setdataBox] = useState({});
   const [isloading, setislodaing] = useState(false);
   const [temperature, settemperature] = useState([]);
@@ -47,58 +47,55 @@ import Loader from '@/components/loader';
     fetchData();
   }, []);
 
-  if (isloading) return (
-   <Loader/>
-  );
-if (
-  temperature.length < 5 ||
-  pressure.length < 5 ||
-  gas.length < 5 ||
-  altitude.length < 5
-) {
-  return (
-    <div className="flex items-center justify-center h-screen">
-      <div className="bg-white p-8 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold mb-4">Insufficient Proper Data</h2>
-        <p className="text-gray-600 mb-6">
-          The data for your specific device is insufficient. Please ensure that
-          your hardware device is turned on and try again later.
-        </p>
-        <button
-          className="bg-purple-500 text-white py-2 px-4 rounded-md hover:bg-purple-600 transition-colors duration-300"
-          onClick={() => {
-            window.location.reload();
-          }}
-        >
-          Refresh Data
-        </button>
-      </div>
-    </div>
-  );
-}
+  if (isloading) return <Loader />;
+  
+  if (temperature.length < 5 || pressure.length < 5 || gas.length < 5 || altitude.length < 5) {
     return (
-      <div className="flex items-start justify-center bg-slate-900" style={{ minHeight: 'calc(100vh - 60px)' }}>
-        {/* DataBox on the left */}
-        <div className="w-1/5 p-4 flex flex-col">
+      <div className="flex items-center justify-center h-screen">
+        <div className="bg-white p-8 rounded-lg shadow-md">
+          <h2 className="text-2xl font-bold mb-4">Insufficient Proper Data</h2>
+          <p className="text-gray-600 mb-6">
+            The data for your specific device is insufficient. Please ensure that
+            your hardware device is turned on and try again later.
+          </p>
+          <button
+            className="bg-purple-500 text-white py-2 px-4 rounded-md hover:bg-purple-600 transition-colors duration-300"
+            onClick={() => {
+              window.location.reload();
+            }}
+          >
+            Refresh Data
+          </button>
+        </div>
+      </div>
+    );
+  }
+  
+  return (
+    <div className="flex flex-col lg:flex-row bg-slate-900 min-h-screen p-4 gap-4">
+      <div className="w-full lg:w-1/4 lg:max-w-xs">
+        <div className="sticky top-4">
           <DataBox data={dataBox} />
         </div>
-        {/* Charts and MinersView on the right */}
-       <div className="w-4/5 p-4">
-    <div className="grid grid-cols-2 gap-3">
-      <div className="bg-gradient-to-r from-purple-200 to-indigo-200 rounded-lg shadow-md p-6 flex items-center justify-center text-white">
-        <BarChartComponent data={pressure} name="pressure" />
       </div>
-      <div className="bg-gradient-to-r from-purple-200 to-indigo-200 rounded-lg shadow-md p-6 flex items-center justify-center text-white">
-        <BarChartComponent data={gas} name="gas" />
+      <div className="w-full lg:w-3/4 flex-grow">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {[
+            { data: pressure, name: "pressure" },
+            { data: gas, name: "gas" },
+            { data: altitude, name: "altitude" },
+            { data: temperature, name: "temperature" }
+          ].map((item, index) => (
+            <div key={index} className="bg-gradient-to-r from-purple-200 to-indigo-200 rounded-lg shadow-md p-4 overflow-hidden">
+              <div className="w-full h-[300px]">
+                <BarChartComponent data={item.data} name={item.name} />
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
-      <div className="bg-gradient-to-r from-purple-200 to-indigo-200 rounded-lg shadow-md p-6 flex items-center justify-center text-white">
-        <BarChartComponent data={altitude} name="altitude" />
-      </div>
-      <div className="bg-gradient-to-r from-purple-200 to-indigo-200 rounded-lg shadow-md p-6 flex items-center justify-center text-white">
-        <BarChartComponent data={temperature} name="temperature" />
-      </div>
-    </div></div>
-      </div>
-    
-    )}
-  export default Home
+    </div>
+  )
+}
+
+export default Home

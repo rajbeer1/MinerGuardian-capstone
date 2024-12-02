@@ -119,17 +119,10 @@ function Home() {
   }
   
   return (
-    <main
-      style={{
-        position: 'relative',
-        width: '100%',
-        height: `calc(100vh - 60px)`,
-      }}
-    >
-      {' '}
+    <main className="relative w-full h-screen">
       <GoogleMap
         mapContainerStyle={{
-          position: 'relative',
+          position: 'absolute',
           height: '100%',
           width: '100%',
         }}

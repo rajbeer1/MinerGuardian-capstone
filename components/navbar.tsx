@@ -64,7 +64,6 @@ const Navbar = () => {
           display: 'flex',
           justifyContent: 'space-around',
 
-          
           position: 'fixed',
           height: '60px',
           top: 0,
@@ -92,22 +91,16 @@ const Navbar = () => {
         </Link>
         <Dialog>
           <DialogTrigger>
-            <div
-              className="text-xl font-medium hover:text-violet-600"
-              style={{ padding: '1rem' }}
-            >
-              SOS
-            </div>
+            <div className="text-xl font-medium hover:text-violet-600">SOS</div>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-md">
+          <DialogContent className="sm:max-w-md w-full mx-4">
             <DialogHeader>
               <DialogTitle>SOS</DialogTitle>
               <DialogDescription className="font-semibold">
-                Do you want to send SOS to the admin
+                Do you want to send SOS to the admin?
               </DialogDescription>
             </DialogHeader>
-
-            <DialogFooter className="flex justify-center w-full p-4">
+            <DialogFooter className="sm:justify-center">
               <DialogClose>
                 <Button
                   type="button"
@@ -120,7 +113,6 @@ const Navbar = () => {
             </DialogFooter>
           </DialogContent>
         </Dialog>
-
         <Dialog>
           <DialogTrigger>
             <Avatar

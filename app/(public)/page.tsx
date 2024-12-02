@@ -61,14 +61,15 @@ export default function LoginAccount() {
     }
  }
   return (
-    <div className="relative flex flex-col justify-center items-center min-h-screen overflow-hidden">
-      <div className="w-full m-auto bg-white lg:max-w-lg">
-        <Toaster position='top-right'
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-md">
+        <Toaster
+          position="top-right"
           toastOptions={{
-            duration:5000
+            duration: 5000,
           }}
-          ></Toaster>
-        <Card>
+        />
+        <Card className="w-full">
           <CardHeader className="space-y-1">
             <CardTitle className="text-2xl text-center">Log in</CardTitle>
             <CardDescription className="text-center font-bold text-black">
@@ -81,27 +82,34 @@ export default function LoginAccount() {
           <CardContent className="grid gap-4">
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" value={ data.email} placeholder="" onChange={(e) => {
-                setdata({...data,email:e.target.value})
-              }}/>
+              <Input
+                id="email"
+                type="email"
+                value={data.email}
+                placeholder=""
+                onChange={(e) => {
+                  setdata({ ...data, email: e.target.value });
+                }}
+              />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" value={data.password} onChange={(e) => {
-                setdata({...data,password:e.target.value})
-              }}/>
+              <Input
+                id="password"
+                type="password"
+                value={data.password}
+                onChange={(e) => {
+                  setdata({ ...data, password: e.target.value });
+                }}
+              />
             </div>
             <div className="flex items-center space-x-2">
-              <Checkbox id="terms" onCheckedChange={(checked) => {
-                 
-                
-                if (checked === false) {
-                  setremember(0)
-                } else if(checked===true){
-                  setremember(1)
-                }
-                console.log(remember)
-              }}  />
+              <Checkbox
+                id="terms"
+                onCheckedChange={(checked) => {
+                  setremember(checked ? 1 : 0);
+                }}
+              />
               <label
                 htmlFor="terms"
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -110,9 +118,14 @@ export default function LoginAccount() {
               </label>
             </div>
           </CardContent>
-          <CardFooter className="flex flex-col">
-            <Button disabled={ isloading} className="w-full" onClick={submit}>Login</Button>
-            
+          <CardFooter>
+            <Button
+              disabled={isloading}
+              className="w-full"
+              onClick={submit}
+            >
+              Login
+            </Button>
           </CardFooter>
         </Card>
       </div>
